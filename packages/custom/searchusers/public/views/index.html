@@ -1,0 +1,20 @@
+<div class="" data-ng-controller="SearchusersController">
+  <h1>Search for user</h1>
+  <form name="searchUserForm" class="form-horizontal" role="form" data-ng-submit="search"novalidate>
+    <div class="col-sm-10">
+     <input name="userInput" data-ng-model="content" id="content" placeholder="Type in username here" class="form-control" required/>
+    </div> 
+    <button type="submit" class="btn btn-info">Submit</button>
+  </form>
+
+  <ul class="articles unstyled">
+    <li data-ng-repeat="user in result">
+      <span>{{user.name}}</span>
+      <span>{{user.username}}</span>
+      <span>{{user.email}}</span>
+    </li>
+  </ul>
+  <h1 data-ng-hide="!result || result.length">No user found :(</h1>
+
+</div>
+

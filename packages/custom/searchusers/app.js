@@ -5,32 +5,32 @@
  */
 var Module = require('meanio').Module;
 
-var Newapp = new Module('newapp');
+var Searchusers = new Module('searchusers');
 
 /*
  * All MEAN packages require registration
  * Dependency injection is used to define required modules
  */
-Newapp.register(function(app, auth, database) {
+Searchusers.register(function(app, auth, database) {
 
   //We enable routing. By default the Package Object is passed to the routes
-  Newapp.routes(app, auth, database);
+  Searchusers.routes(app, auth, database);
 
   //We are adding a link to the main menu for all authenticated users
-  Newapp.menus.add({
-    title: 'newapp example page',
-    link: 'newapp example page',
+  Searchusers.menus.add({
+    title: 'Search for Users',
+    link: 'search for users',
     roles: ['authenticated'],
     menu: 'main'
   });
   
-  Newapp.aggregateAsset('css', 'newapp.css');
+  Searchusers.aggregateAsset('css', 'searchusers.css');
 
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback
     // Use this for saving data from administration pages
-    Newapp.settings({
+    Searchusers.settings({
         'someSetting': 'some value'
     }, function(err, settings) {
         //you now have the settings object
@@ -38,15 +38,15 @@ Newapp.register(function(app, auth, database) {
 
     // Another save settings example this time with no callback
     // This writes over the last settings.
-    Newapp.settings({
+    Searchusers.settings({
         'anotherSettings': 'some value'
     });
 
     // Get settings. Retrieves latest saved settigns
-    Newapp.settings(function(err, settings) {
+    Searchusers.settings(function(err, settings) {
         //you now have the settings object
     });
     */
 
-  return Newapp;
+  return Searchusers;
 });
