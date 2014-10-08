@@ -105,6 +105,7 @@ exports.create = function(req, res, next) {
  * Send User
  */
 exports.me = function(req, res) {
+  console.log('Entered export.me!');
   res.json(req.user || null);
 };
 
@@ -119,6 +120,24 @@ exports.user = function(req, res, next, id) {
     .exec(function(err, user) {
       if (err) return next(err);
       if (!user) return next(new Error('Failed to load User ' + id));
+      req.profile = user;
+      next();
+    });
+};
+
+/**
+ * Find user by username
+ */
+exports.username = function(req, res, next, nickname) {
+  User
+    .findOne({
+      username: nickname
+    })
+    .exec(function(err, user) {
+      console.log(user);
+      console.log(err);
+      if (err) return next(err);
+      if (!user) return next(new Error('Failed to load User ' + nickname));
       req.profile = user;
       next();
     });

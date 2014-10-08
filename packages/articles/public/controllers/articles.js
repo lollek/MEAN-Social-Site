@@ -12,14 +12,10 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     $scope.create = function(isValid) {
       if (isValid) {
         var article = new Articles({
-          title: this.title,
           content: this.content
         });
-        article.$save(function(response) {
-          $location.path('articles/' + response._id);
-        });
-
-        this.title = '';
+        article.$save();
+        $scope.find();
         this.content = '';
       } else {
         $scope.submitted = true;
@@ -69,6 +65,14 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
         articleId: $stateParams.articleId
       }, function(article) {
         $scope.article = article;
+      });
+    };
+
+    $scope.findByUser = function() {
+      Articles.query({
+        username: $stateParams.username
+      }, function(articles) {
+        $scope.articles = articles;
       });
     };
   }

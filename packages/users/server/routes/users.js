@@ -22,7 +22,7 @@ module.exports = function(MeanUser, app, auth, database, passport) {
     .post(users.resetpassword);
 
   // Setting up the userId param
-  app.param('userId', users.user);
+  //app.param('userId', users.user);
 
   // AngularJS route to check for authentication
   app.route('/loggedin')

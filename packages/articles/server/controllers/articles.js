@@ -2,10 +2,12 @@
 
 /**
  * Module dependencies.
+ users = require('../../../users/server/controllers/users')
  */
 var mongoose = require('mongoose'),
   Article = mongoose.model('Article'),
-  _ = require('lodash');
+  _ = require('lodash'),
+  User = mongoose.model('User');
 
 
 /**
@@ -25,6 +27,7 @@ exports.article = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
   var article = new Article(req.body);
+  article.author = req.user;
   article.user = req.user;
 
   article.save(function(err) {
@@ -85,13 +88,20 @@ exports.show = function(req, res) {
  * List of Articles
  */
 exports.all = function(req, res) {
-  Article.find().sort('-created').populate('user', 'name username').exec(function(err, articles) {
-    if (err) {
-      return res.json(500, {
-        error: 'Cannot list the articles'
-      });
-    }
-    res.json(articles);
-
-  });
+  if (req.query.username !== null) {
+    User.find({'username': req.query.username }, function (err, results) {
+      if (results.length) {
+        console.error(results[0]._id);
+        (Article.find({'user': results[0]._id})) 
+          .sort('-created')
+          .populate('user', 'name username')
+          .exec(function(err, articles) {
+            if (err) {
+              return res.json(500, {error: 'Cannot list the articles'});
+            }
+            res.json(articles);
+          }); 
+      }
+    });
+  }
 };

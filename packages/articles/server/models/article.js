@@ -15,11 +15,6 @@ var ArticleSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  title: {
-    type: String,
-    required: true,
-    trim: true
-  },
   content: {
     type: String,
     required: true,
@@ -28,16 +23,17 @@ var ArticleSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  author: {
+    type: Schema.ObjectId,
+    ref: 'Author'
   }
 });
 
 /**
  * Validations
+ * TODO: Should not be longer than 140 chars
  */
-ArticleSchema.path('title').validate(function(title) {
-  return !!title;
-}, 'Title cannot be blank');
-
 ArticleSchema.path('content').validate(function(content) {
   return !!content;
 }, 'Content cannot be blank');

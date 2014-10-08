@@ -1,4 +1,4 @@
-<section data-ng-controller="ArticlesController" data-ng-init="find()">
+<section data-ng-controller="ArticlesController" data-ng-init="findByUser()">
   <form name="articleForm" class="form-horizontal" role="form" data-ng-submit="create(articleForm.$valid)" novalidate>
     <div class="form-group" ng-class="{ 'has-error' : submitted && articleForm.content.$invalid }">
       <div class="col-md-9">
