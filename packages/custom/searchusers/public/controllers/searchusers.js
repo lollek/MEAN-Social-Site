@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.searchusers').controller('SearchusersController', ['$scope', 'Global', 'Searchusers',
-  function($scope, Global, Searchusers) {
+angular.module('mean.searchusers').controller('SearchusersController', ['$scope', '$stateParams', 'Global', 'Searchusers',
+  function($scope, $stateParams, Global, Searchusers) {
     $scope.global = Global;
     $scope.package = {
       name: 'searchusers'

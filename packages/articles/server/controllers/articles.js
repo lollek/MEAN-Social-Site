@@ -26,18 +26,27 @@ exports.article = function(req, res, next, id) {
  * Create an article
  */
 exports.create = function(req, res) {
-  var article = new Article(req.body);
-  article.author = req.user;
-  article.user = req.user;
-
-  article.save(function(err) {
+  User.find({'username': req.body.user }, function (err, username) {
     if (err) {
       return res.json(500, {
-        error: 'Cannot save the article'
+        error: 'Cannot save the article: ' + err
+      });
+    }
+
+    var article = new Article({
+      'content': req.body.content,
+      'user': username[0],
+      'author': req.user
+    });
+
+    article.save(function(err) {
+    if (err) {
+      return res.json(500, {
+        error: 'Cannot save the article: ' + err
       });
     }
     res.json(article);
-
+    });
   });
 };
 

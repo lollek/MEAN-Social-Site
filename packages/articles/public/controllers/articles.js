@@ -12,7 +12,8 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     $scope.create = function(isValid) {
       if (isValid) {
         var article = new Articles({
-          content: this.content
+          content: this.content,
+          user: $location.path().split('/user/')[1]
         });
         article.$save();
         $scope.find();
@@ -55,7 +56,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.find = function() {
-      Articles.query(function(articles) {
+      Articles.query({ 'username': $location.path().split('/user/')[1] },function(articles) {
         $scope.articles = articles;
       });
     };

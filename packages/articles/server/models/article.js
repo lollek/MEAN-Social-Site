@@ -26,7 +26,7 @@ var ArticleSchema = new Schema({
   },
   author: {
     type: Schema.ObjectId,
-    ref: 'Author'
+    ref: 'User'
   }
 });
 

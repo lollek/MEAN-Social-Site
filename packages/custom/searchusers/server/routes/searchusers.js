@@ -8,5 +8,5 @@ module.exports = function(Searchusers, app, auth, database) {
     .get(search.search);
 
 
-  app.param('username', search.username)
+  app.param('username', search.username);
 };

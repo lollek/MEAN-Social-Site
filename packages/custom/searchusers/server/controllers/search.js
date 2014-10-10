@@ -9,7 +9,7 @@
 
  exports.search = function(req, res) {
  	console.error(req);
- 	User.find({ 'username': new RegExp(req.param.username, "i") }, function (err, results) {
+ 	User.find({ 'username': new RegExp(req.param.username, 'i') }, function (err, results) {
  		res.json(results);
  	});
  };
