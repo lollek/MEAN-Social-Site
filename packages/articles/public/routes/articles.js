@@ -25,6 +25,13 @@ angular.module('mean.articles').config(['$stateProvider',
 
     // states for my app
     $stateProvider
+      .state('mypage', {
+        url: '/user',
+        templateUrl: 'articles/views/listByUser.html',
+        resolve: {
+          loggedin: checkLoggedin
+        }
+      })
       .state('all articles', {
         url: '/articles',
         templateUrl: 'articles/views/list.html',

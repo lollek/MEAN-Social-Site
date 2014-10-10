@@ -13,7 +13,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
       if (isValid) {
         var article = new Articles({
           content: this.content,
-          user: $location.path().split('/user/')[1]
+          user: $scope.getPage()
         });
         article.$save();
         $scope.find();
@@ -55,8 +55,15 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
       }
     };
 
+    $scope.getPage = function() {
+      var userpage = $location.path().split('/user/')[1];
+      if ($location.path() === '/user')
+        userpage = window.user.username;
+      return userpage;
+    };
+
     $scope.find = function() {
-      Articles.query({ 'username': $location.path().split('/user/')[1] },function(articles) {
+      Articles.query({ 'username': $scope.getPage() },function(articles) {
         $scope.articles = articles;
       });
     };
@@ -70,6 +77,9 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.findByUser = function() {
+      if ($stateParams.username === null) {
+        $stateParams.username = window.user.username;
+      }
       Articles.query({
         username: $stateParams.username
       }, function(articles) {
