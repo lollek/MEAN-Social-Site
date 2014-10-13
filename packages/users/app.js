@@ -24,6 +24,13 @@ MeanUser.register(function(app, auth, passport, database) {
   //     menu: 'main'
   // });
 
+  MeanUser.menus.add({
+    title: 'Search for Users',
+    link: 'search for users',
+    roles: ['authenticated'],
+    menu: 'main'
+  });
+
   MeanUser.aggregateAsset('js', 'meanUser.js');
 
   /**

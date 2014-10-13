@@ -1,6 +1,6 @@
-<div class="" data-ng-controller="SearchusersController">
+<div class="" data-ng-controller="SearchCtrl" data-ng-init="findUser()">
   <h1>Search for user</h1>
-  <form name="searchUserForm" class="form-horizontal" role="form" data-ng-submit="search"novalidate>
+  <form name="searchUserForm" class="form-horizontal" role="form" data-ng-submit="search(content)" novalidate>
     <div class="col-sm-10">
      <input name="userInput" data-ng-model="content" id="content" placeholder="Type in username here" class="form-control" required/>
     </div> 
