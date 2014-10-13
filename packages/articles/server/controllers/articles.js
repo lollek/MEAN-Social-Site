@@ -97,20 +97,22 @@ exports.show = function(req, res) {
  * List of Articles
  */
 exports.all = function(req, res) {
-  if (req.query.username !== null) {
-    User.find({'username': req.query.username }, function (err, results) {
-      if (results.length) {
-        console.error(results[0]._id);
-        (Article.find({'user': results[0]._id})) 
-          .sort('-created')
-          .populate('user', 'name username')
-          .exec(function(err, articles) {
-            if (err) {
-              return res.json(500, {error: 'Cannot list the articles'});
-            }
-            res.json(articles);
-          }); 
-      }
-    });
+  var username = req.query.username;
+  if (username === undefined) {
+    username = req.user.username;
   }
+  User.find({'username': username }, function (err, results) {
+    if (results.length) {
+      console.error(results[0]._id);
+      (Article.find({'user': results[0]._id})) 
+        .sort('-created')
+        .populate('user', 'name username')
+        .exec(function(err, articles) {
+          if (err) {
+            return res.json(500, {error: 'Cannot list the articles'});
+          }
+          res.json(articles);
+        }); 
+    }
+  });
 };
