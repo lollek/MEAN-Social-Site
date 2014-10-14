@@ -22,10 +22,12 @@ var ArticleSchema = new Schema({
   },
   user: {
     type: Schema.ObjectId,
+    required: true,
     ref: 'User'
   },
   author: {
     type: Schema.ObjectId,
+    required: true,
     ref: 'User'
   }
 });

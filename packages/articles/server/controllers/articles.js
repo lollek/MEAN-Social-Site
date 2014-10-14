@@ -6,7 +6,6 @@
  */
 var mongoose = require('mongoose'),
   Article = mongoose.model('Article'),
-  _ = require('lodash'),
   User = mongoose.model('User');
 
 
@@ -51,25 +50,6 @@ exports.create = function(req, res) {
 };
 
 /**
- * Update an article
- */
-exports.update = function(req, res) {
-  var article = req.article;
-
-  article = _.extend(article, req.body);
-
-  article.save(function(err) {
-    if (err) {
-      return res.json(500, {
-        error: 'Cannot update the article'
-      });
-    }
-    res.json(article);
-
-  });
-};
-
-/**
  * Delete an article
  */
 exports.destroy = function(req, res) {
@@ -110,6 +90,7 @@ exports.all = function(req, res) {
       Article.find({'user': results[0]._id})
         .sort('-created')
         .populate('user', 'name username')
+        .populate('author', 'name username')
         .exec(function(err, articles) {
           if (err) {
             return res.json(500, {error: 'Cannot list the articles'});

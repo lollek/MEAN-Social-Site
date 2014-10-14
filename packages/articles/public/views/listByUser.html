@@ -16,25 +16,31 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="form-group">
-      <div class="col-md-9">
-        <button type="submit" class="btn btn-info">Submit</button>
+      <div class="form-group">
+        <div class="col-md-9">
+          <button type="submit" class="btn btn-info">Submit</button>
+        </div>
       </div>
-    </div>
-  </form>
-  <br/><br/><br/>
-  <ul class="articles unstyled">
-    <li data-ng-repeat="article in articles">
-      <span>{{article.created | date:'medium'}}</span> /
-      <span>{{article.user.name}}</span>
-      <div>{{article.content}}</div>
-      <span data-ng-if="hasAuthorization(article)">
-        <a class="btn" data-ng-click="remove(article);">
-          <i class="glyphicon glyphicon-trash"></i>
-        </a>
-      </span>
-    </li>
-  </ul>
-  <h1 data-ng-hide="!articles || articles.length">No posts here. Why not write something?</h1>
+    </form>
+
+    <br/><br/><br/>
+
+    <ul class="articles unstyled">
+      <li data-ng-repeat="article in articles">
+        <span>{{article.created | date:'medium'}}</span> /
+        <span><a ng-href="#!/user/{{article.author.username}}">
+            {{article.author.username}}
+          </a> ({{article.author.name}})</span>
+        <div>
+          <span data-ng-if="hasAuthorization(article)">
+            <a class="btn" data-ng-click="remove(article);">
+              <i class="glyphicon glyphicon-trash"></i>
+            </a>
+          </span>
+          {{article.content}}
+        </div>
+      </li>
+    </ul>
+    <h1 data-ng-hide="!articles || articles.length">No posts here. Why not write something?</h1>
+  </div>
 </section>

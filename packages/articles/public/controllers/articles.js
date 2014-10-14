@@ -6,7 +6,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
 
     $scope.hasAuthorization = function(article) {
       if (!article || !article.user) return false;
-      return $scope.global.isAdmin || article.user._id === $scope.global.user._id;
+      return $scope.global.isAdmin || article.user._id === $scope.global.user._id || article.author._id === $scope.global.user._id;
     };
 
     $scope.isFriend = function() {
@@ -57,8 +57,8 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.getPage = function() {
-      console.log($location.path());
       switch($location.path()) {
+        case '/': /* fall through */
         case '/user': /* fall through */
         case '/user/': return window.user.username;
         default: return $location.path().split('/user/')[1];
