@@ -78,25 +78,27 @@ exports.show = function(req, res) {
  */
 exports.all = function(req, res) {
   var username = req.query.username;
-  if (username === undefined) {
-    if (req.user === undefined) {
-      res.json(404, {});
-      return;
-    }
-    username = req.user.username;
+  if (username === undefined)
+    if (req.user !== undefined)
+      username = req.user.username;
+
+  if (username !== undefined) {
+    User.find({'username': username }, function (err, results) {
+      if (results.length) {
+        Article.find({'user': results[0]._id})
+          .sort('-created')
+          .populate('user', 'name username')
+          .populate('author', 'name username')
+          .exec(function(err, articles) {
+            if (err) {
+              return res.json(500, {error: 'Cannot list the articles'});
+            }
+            res.json(articles);
+          });
+      }
+    });
+  } else {
+    console.error(req);
+    res.json([]);
   }
-  User.find({'username': username }, function (err, results) {
-    if (results.length) {
-      Article.find({'user': results[0]._id})
-        .sort('-created')
-        .populate('user', 'name username')
-        .populate('author', 'name username')
-        .exec(function(err, articles) {
-          if (err) {
-            return res.json(500, {error: 'Cannot list the articles'});
-          }
-          res.json(articles);
-        });
-    }
-  });
 };

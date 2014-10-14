@@ -9,8 +9,12 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
       return $scope.global.isAdmin || article.user._id === $scope.global.user._id || article.author._id === $scope.global.user._id;
     };
 
+    $scope.isLoggedIn = function() {
+      return $scope.global.authenticated;
+    };
+
     $scope.isFriend = function() {
-      if ($scope.isLoggedIn()) {
+      if (window.user.friends !== undefined) {
         if (window.user.friends.indexOf($scope.getPage()) !== -1)
           return true;
         if (window.user.username === $scope.getPage())
