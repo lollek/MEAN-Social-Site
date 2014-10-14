@@ -105,7 +105,6 @@ exports.create = function(req, res, next) {
  * Send User
  */
 exports.me = function(req, res) {
-  console.log('Entered export.me!');
   res.json(req.user || null);
 };
 

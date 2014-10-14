@@ -6,7 +6,7 @@ module.exports = {
     debug: true
   },
   app: {
-    name: 'MEAN - FullStack JS - Development'
+    name: 'TDP013'
   },
   facebook: {
     clientID: 'DEFAULT_APP_ID',

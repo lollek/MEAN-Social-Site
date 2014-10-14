@@ -10,7 +10,7 @@ angular.module('mean.system').config(['$stateProvider', '$urlRouterProvider',
     $stateProvider
       .state('home', {
         url: '/',
-        templateUrl: 'system/views/index.html'
+        templateUrl: 'articles/views/listByUser.html'
       });
   }
 ]).config(['$locationProvider',

@@ -13,7 +13,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
       if ($scope.isLoggedIn()) {
         if (window.user.friends.indexOf($scope.getPage()) !== -1)
           return true;
-        if (window.user.username == $scope.getPage())
+        if (window.user.username === $scope.getPage())
           return true;
       }
       return false;
@@ -25,7 +25,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
         .success(function(data) {
         });
         */
-    }
+    };
 
     $scope.create = function(isValid) {
       if (isValid) {
@@ -36,6 +36,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
         article.$save();
         $scope.find();
         this.content = '';
+
       } else {
         $scope.submitted = true;
       }
@@ -44,12 +45,10 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     $scope.remove = function(article) {
       if (article) {
         article.$remove();
-
-        for (var i in $scope.articles) {
-          if ($scope.articles[i] === article) {
+        for (var i in $scope.articles)
+          if ($scope.articles[i] === article)
             $scope.articles.splice(i, 1);
-          }
-        }
+
       } else {
         $scope.article.$remove(function(response) {
           $location.path('articles');
@@ -57,49 +56,18 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
       }
     };
 
-    $scope.update = function(isValid) {
-      if (isValid) {
-        var article = $scope.article;
-        if (!article.updated) {
-          article.updated = [];
-        }
-        article.updated.push(new Date().getTime());
-
-        article.$update(function() {
-          $location.path('articles/' + article._id);
-        });
-      } else {
-        $scope.submitted = true;
-      }
-    };
-
     $scope.getPage = function() {
-      var userpage = $location.path().split('/user/')[1];
-      if ($location.path() === '/user')
-        userpage = window.user.username;
-      return userpage;
+      console.log($location.path());
+      switch($location.path()) {
+        case '/user': /* fall through */
+        case '/user/': return window.user.username;
+        default: return $location.path().split('/user/')[1];
+      }
     };
 
     $scope.find = function() {
-      Articles.query({ 'username': $scope.getPage() },function(articles) {
-        $scope.articles = articles;
-      });
-    };
-
-    $scope.findOne = function() {
-      Articles.get({
-        articleId: $stateParams.articleId
-      }, function(article) {
-        $scope.article = article;
-      });
-    };
-
-    $scope.findByUser = function() {
-      if ($stateParams.username === null) {
-        $stateParams.username = window.user.username;
-      }
       Articles.query({
-        username: $stateParams.username
+        'username': $scope.getPage()
       }, function(articles) {
         $scope.articles = articles;
       });

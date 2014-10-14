@@ -32,34 +32,6 @@ angular.module('mean.articles').config(['$stateProvider',
           loggedin: checkLoggedin
         }
       })
-      .state('all articles', {
-        url: '/articles',
-        templateUrl: 'articles/views/list.html',
-        resolve: {
-          loggedin: checkLoggedin
-        }
-      })
-      .state('create article', {
-        url: '/articles/create',
-        templateUrl: 'articles/views/create.html',
-        resolve: {
-          loggedin: checkLoggedin
-        }
-      })
-      .state('edit article', {
-        url: '/articles/:articleId/edit',
-        templateUrl: 'articles/views/edit.html',
-        resolve: {
-          loggedin: checkLoggedin
-        }
-      })
-      .state('article by id', {
-        url: '/articles/:articleId',
-        templateUrl: 'articles/views/view.html',
-        resolve: {
-          loggedin: checkLoggedin
-        }
-      })
       .state('articles by username', {
         url: '/user/:username',
         templateUrl: 'articles/views/listByUser.html',
