@@ -1,10 +1,19 @@
-<section data-ng-controller="ArticlesController" data-ng-init="findByUser()">
-  <form name="articleForm" class="form-horizontal" role="form" data-ng-submit="create(articleForm.$valid)" novalidate>
-    <div class="form-group" ng-class="{ 'has-error' : submitted && articleForm.content.$invalid }">
-      <div class="col-md-9">
-        <textarea name="content" data-ng-model="content" id="content" cols="30" rows="2" placeholder="Content" class="form-control" required></textarea>
-        <div ng-show="submitted && articleForm.content.$invalid" class="help-block">
-          <p ng-show="articleForm.content.$error.required">Content is required</p>
+<section data-ng-controller="ArticlesController" data-ng-init="find()" >
+  <div data-ng-show="isLoggedIn()">
+    <h3 data-ng-hide="isFriend()">
+      <a ng-href="/#!/user/{{getPage()}}?add=true">
+        Add {{getPage()}} as friend
+      </a>
+    </h3>
+
+
+    <form name="articleForm" class="form-horizontal" role="form" data-ng-submit="create(articleForm.$valid)" novalidate>
+      <div class="form-group" ng-class="{ 'has-error' : submitted && articleForm.content.$invalid }">
+        <div class="col-md-9">
+          <textarea name="content" data-ng-model="content" id="content" cols="30" rows="2" placeholder="Content" class="form-control" required></textarea>
+          <div ng-show="submitted && articleForm.content.$invalid" class="help-block">
+            <p ng-show="articleForm.content.$error.required">Content is required</p>
+          </div>
         </div>
       </div>
     </div>

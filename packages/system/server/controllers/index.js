@@ -24,6 +24,7 @@ exports.render = function(req, res) {
       name: req.user.name,
       _id: req.user._id,
       username: req.user.username,
+      friends: req.user.friends,
       roles: req.user.roles
     } : {},
     modules: modules,

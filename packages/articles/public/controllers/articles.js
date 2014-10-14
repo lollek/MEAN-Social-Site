@@ -1,13 +1,31 @@
 'use strict';
 
-angular.module('mean.articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Global', 'Articles',
-  function($scope, $stateParams, $location, Global, Articles) {
+angular.module('mean.articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Articles',
+  function($scope, $stateParams, $location, $http, Global, Articles) {
     $scope.global = Global;
 
     $scope.hasAuthorization = function(article) {
       if (!article || !article.user) return false;
       return $scope.global.isAdmin || article.user._id === $scope.global.user._id;
     };
+
+    $scope.isFriend = function() {
+      if ($scope.isLoggedIn()) {
+        if (window.user.friends.indexOf($scope.getPage()) !== -1)
+          return true;
+        if (window.user.username == $scope.getPage())
+          return true;
+      }
+      return false;
+    };
+
+    $scope.addFriend = function() {
+      /*
+      $http.get()
+        .success(function(data) {
+        });
+        */
+    }
 
     $scope.create = function(isValid) {
       if (isValid) {

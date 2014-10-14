@@ -89,6 +89,12 @@ angular.module('mean.users').config(['$stateProvider',
           resolve: {
             loggedin: checkLoggedin
           }
+      }).state('friends', {
+        url: '/friends',
+          templateUrl: 'users/views/friends.html',
+          resolve: {
+            loggedin: checkLoggedin
+          }
       });
   }
 ]);

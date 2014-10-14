@@ -1,0 +1,13 @@
+<div class="" data-ng-controller="FriendsCtrl" >
+  <h1>Friends</h1>
+  <ul class="articles unstyled">
+    <li data-ng-repeat="friend in friends">
+      <span>{{user.name}}</span>
+      <a ng-href="#!/user/{{user.username}}"><span>{{user.username}}</span></a>
+      <span>{{user.email}}</span>
+    </li>
+  </ul>
+  <h1 data-ng-hide="!friends || friends.length">You have no friends :(</h1>
+
+</div>
+
