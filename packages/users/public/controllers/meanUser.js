@@ -177,25 +177,25 @@ angular.module('mean.users')
       };
     }
   ])
-  .controller('SearchCtrl', ['$scope', '$stateParams', '$location','Global', 'User', 
-  function($scope, $stateParams, $location, Global, User) {
+  .controller('SearchCtrl', ['$scope', '$stateParams', '$location', '$http','Global',
+  function($scope, $stateParams, $location, $http, Global) {
     $scope.global = Global;
     $scope.result = null;
 
-    $scope.search = function(username) {
-      $location.path('search/' + username);
+    $scope.findUser = function() {
+      var username = $location.path().split('/search/')[1];
+      if (username && username.length > 0)
+        $scope.search(username);
     };
 
-    $scope.findUser = function() {
-      if ($stateParams.username === undefined)
+    $scope.search = function(username) {
+      //$location.path('search/' + username);
+      if (username === undefined)
         return;
-      User.get({
-        'username': $stateParams.username
-      }, function(data) {
-        $scope.result = data;
-        console.log(data);
-      });
-      console.log($scope.result);
+      $http.get('/search/' + username)
+        .success(function(data) {
+          $scope.result = data;
+        });
     };
   }
   ]);

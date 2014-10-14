@@ -134,12 +134,29 @@ exports.username = function(req, res, next, nickname) {
       username: nickname
     })
     .exec(function(err, user) {
-      console.log(user);
-      console.log(err);
       if (err) return next(err);
       if (!user) return next(new Error('Failed to load User ' + nickname));
       req.profile = user;
       next();
+    });
+};
+
+/**
+ * Search for user by username
+ */
+exports.findUser = function(req, res, next) {
+  User
+    .find({
+      $or: [
+      {'name': { $regex: req.params.username, $options: 'i' }},
+      {'username': { $regex: req.params.username, $options: 'i' }},
+      {'email': { $regex: req.params.username, $options: 'i' }}
+      ]
+    }).select('name username email')
+    .exec(function(err, users) {
+      if (err) return next(err);
+      if (!users) return next(new Error('No users found'));
+      res.json(users);
     });
 };
 

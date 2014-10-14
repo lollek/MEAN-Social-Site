@@ -10,7 +10,7 @@
   <ul class="articles unstyled">
     <li data-ng-repeat="user in result">
       <span>{{user.name}}</span>
-      <span>{{user.username}}</span>
+      <a ng-href="#!/user/{{user.username}}"><span>{{user.username}}</span></a>
       <span>{{user.email}}</span>
     </li>
   </ul>
