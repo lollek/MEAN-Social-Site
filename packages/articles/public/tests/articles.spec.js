@@ -54,7 +54,6 @@
 
           // test expected GET request
           $httpBackend.expectGET('articles').respond([{
-            title: 'An Article about MEAN',
             content: 'MEAN rocks!'
           }]);
 
@@ -64,7 +63,6 @@
 
           // test scope value
           expect(scope.articles).toEqualData([{
-            title: 'An Article about MEAN',
             content: 'MEAN rocks!'
           }]);
 
@@ -88,12 +86,6 @@
             };
           };
 
-          var postJSON = function() {
-            return {
-              username: 'test'
-            };
-          };
-
           var responseJSON = function() {
             return {
               Accept: 'application/json, text/plain, */*'
@@ -105,7 +97,7 @@
 
           // test post request is sent
           $httpBackend.expectPOST('articles', postArticleData()).respond(responseArticleData());
-          $httpBackend.expectGET('articles', postJSON()).respond(responseJSON());
+          $httpBackend.expectGET('articles', responseJSON()).respond([responseArticleData()]);
 
           // Run controller
           scope.create(true);

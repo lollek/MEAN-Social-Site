@@ -70,13 +70,11 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.find = function() {
-      if ($scope.isLoggedIn()) {
-        Articles.query({
-          'username': $scope.getPage()
-       }, function(articles) {
-         $scope.articles = articles;
-       });
-      }
+      Articles.query({
+        'username': $scope.getPage()
+     }, function(articles) {
+       $scope.articles = articles;
+     });
     }; 
   }
 ]);
