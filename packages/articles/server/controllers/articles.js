@@ -98,7 +98,6 @@ exports.all = function(req, res) {
       }
     });
   } else {
-    console.error(req);
     res.json([]);
   }
 };

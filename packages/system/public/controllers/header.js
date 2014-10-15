@@ -4,6 +4,10 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
   function($scope, $rootScope, Global, Menus) {
     $scope.global = Global;
     $scope.menus = {};
+    $scope.home = function() {
+      return $scope.global.authenticated ? '#!/user/' + $scope.global.user.username : '/';
+    };
+
 
     // Default hard coded menu items for main menu
     var defaultMainMenu = [];
