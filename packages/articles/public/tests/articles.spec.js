@@ -70,39 +70,12 @@
 
         });
 
-      it('$scope.findOne() should create an array with one article object fetched ' +
-        'from XHR using a articleId URL parameter', function() {
-          // fixture URL parament
-          $stateParams.articleId = '525a8422f6d0f87f0e407a33';
-
-          // fixture response object
-          var testArticleData = function() {
-            return {
-              title: 'An Article about MEAN',
-              content: 'MEAN rocks!'
-            };
-          };
-
-          // test expected GET request with response object
-          $httpBackend.expectGET(/articles\/([0-9a-fA-F]{24})$/).respond(testArticleData());
-
-          // run controller
-          scope.findOne();
-          $httpBackend.flush();
-
-          // test scope value
-          expect(scope.article).toEqualData(testArticleData());
-
-        });
-
       it('$scope.create() with valid form data should send a POST request ' +
-        'with the form input values and then ' +
-        'locate to new object URL', function() {
+        'with the form input values', function() {
 
           // fixture expected POST data
           var postArticleData = function() {
             return {
-              title: 'An Article about MEAN',
               content: 'MEAN rocks!'
             };
           };
@@ -111,66 +84,37 @@
           var responseArticleData = function() {
             return {
               _id: '525cf20451979dea2c000001',
-              title: 'An Article about MEAN',
               content: 'MEAN rocks!'
             };
           };
 
+          var postJSON = function() {
+            return {
+              username: 'test'
+            };
+          };
+
+          var responseJSON = function() {
+            return {
+              Accept: 'application/json, text/plain, */*'
+            };
+          };
+
           // fixture mock form input values
-          scope.title = 'An Article about MEAN';
           scope.content = 'MEAN rocks!';
 
           // test post request is sent
           $httpBackend.expectPOST('articles', postArticleData()).respond(responseArticleData());
+          $httpBackend.expectGET('articles', postJSON()).respond(responseJSON());
 
           // Run controller
           scope.create(true);
           $httpBackend.flush();
 
           // test form input(s) are reset
-          expect(scope.title).toEqual('');
           expect(scope.content).toEqual('');
 
-          // test URL location to new object
-          expect($location.path()).toBe('/articles/' + responseArticleData()._id);
         });
-
-      it('$scope.update(true) should update a valid article', inject(function(Articles) {
-
-        // fixture rideshare
-        var putArticleData = function() {
-          return {
-            _id: '525a8422f6d0f87f0e407a33',
-            title: 'An Article about MEAN',
-            to: 'MEAN is great!'
-          };
-        };
-
-        // mock article object from form
-        var article = new Articles(putArticleData());
-
-        // mock article in scope
-        scope.article = article;
-
-        // test PUT happens correctly
-        $httpBackend.expectPUT(/articles\/([0-9a-fA-F]{24})$/).respond();
-
-        // testing the body data is out for now until an idea for testing the dynamic updated array value is figured out
-        //$httpBackend.expectPUT(/articles\/([0-9a-fA-F]{24})$/, putArticleData()).respond();
-        /*
-                Error: Expected PUT /articles\/([0-9a-fA-F]{24})$/ with different data
-                EXPECTED: {"_id":"525a8422f6d0f87f0e407a33","title":"An Article about MEAN","to":"MEAN is great!"}
-                GOT:      {"_id":"525a8422f6d0f87f0e407a33","title":"An Article about MEAN","to":"MEAN is great!","updated":[1383534772975]}
-                */
-
-        // run controller
-        scope.update(true);
-        $httpBackend.flush();
-
-        // test URL location to new object
-        expect($location.path()).toBe('/articles/' + putArticleData()._id);
-
-      }));
 
       it('$scope.remove() should send a DELETE request with a valid articleId ' +
         'and remove the article from the scope', inject(function(Articles) {
