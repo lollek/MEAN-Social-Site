@@ -8,6 +8,21 @@ var mongoose = require('mongoose'),
   Article = mongoose.model('Article'),
   User = mongoose.model('User');
 
+exports.addFriend = function(req, res) {
+  User.update({ 
+    _id: req.user._id
+  }, {
+    $addToSet: { friends: req.body.username }
+  }, function(err, results) {
+    if (err) {
+      console.log('addFriend: ' + err);
+      return res.json(500, {
+        error: 'Cannot add friend: ' + err
+      });
+    }
+  });
+  res.json(req.user || null);
+};
 
 /**
  * Find article by id

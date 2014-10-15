@@ -202,6 +202,5 @@ angular.module('mean.users')
   .controller('FriendsCtrl', ['$scope', 'Global',
   function($scope, Global) {
     $scope.global = Global;
-    $scope.friends = [];
     }
   ]);

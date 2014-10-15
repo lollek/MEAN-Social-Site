@@ -1,7 +1,10 @@
 <section data-ng-controller="ArticlesController" data-ng-init="find()" >
   <div data-ng-show="isLoggedIn()">
+    <h3 data-ng-show="isFriend()">
+      Friends Yo!
+    </h3>
     <h3 data-ng-hide="isFriend()">
-      <a ng-href="/#!/user/{{getPage()}}?add=true">
+      <a ng-href="/#!/user/{{getPage()}}" data-ng-click="addFriend()">
         Add {{getPage()}} as friend
       </a>
     </h3>

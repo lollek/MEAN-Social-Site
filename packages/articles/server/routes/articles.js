@@ -19,6 +19,8 @@ module.exports = function(Articles, app, auth) {
   app.route('/articles/:articleId')
     .get(articles.show)
     .delete(auth.requiresLogin, hasAuthorization, articles.destroy);
+  app.route('/addFriend')
+    .post(articles.addFriend);
 
   // Finish with setting up the articleId param
   app.param('articleId', articles.article);

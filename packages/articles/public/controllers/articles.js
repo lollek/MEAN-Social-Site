@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Articles',
-  function($scope, $stateParams, $location, $http, Global, Articles) {
+angular.module('mean.articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', '$window', '$http', 'Global', 'Articles',
+  function($scope, $stateParams, $location, $window, $http, Global, Articles) {
     $scope.global = Global;
 
     $scope.hasAuthorization = function(article) {
@@ -10,25 +10,25 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.isLoggedIn = function() {
+      window.global = $scope.global;
       return $scope.global.authenticated;
     };
 
     $scope.isFriend = function() {
-      if (window.user.friends !== undefined) {
-        if (window.user.friends.indexOf($scope.getPage()) !== -1)
+      if ($scope.global.user.friends !== undefined) {
+        if ($scope.global.user.friends.indexOf($scope.getPage()) !== -1)
           return true;
-        if (window.user.username === $scope.getPage())
+        if ($scope.global.user.username === $scope.getPage())
           return true;
       }
       return false;
     };
 
     $scope.addFriend = function() {
-      /*
-      $http.get()
+      $http.post('/addFriend', {username: $scope.getPage()})
         .success(function(data) {
+          $window.location.reload();
         });
-        */
     };
 
     $scope.create = function(isValid) {
@@ -70,11 +70,13 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.find = function() {
-      Articles.query({
-        'username': $scope.getPage()
-      }, function(articles) {
-        $scope.articles = articles;
-      });
-    };
+      if ($scope.isLoggedIn()) {
+        Articles.query({
+          'username': $scope.getPage()
+       }, function(articles) {
+         $scope.articles = articles;
+       });
+      }
+    }; 
   }
 ]);
