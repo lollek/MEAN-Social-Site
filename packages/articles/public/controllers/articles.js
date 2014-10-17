@@ -10,7 +10,6 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.isLoggedIn = function() {
-      window.global = $scope.global;
       return $scope.global.authenticated;
     };
 
@@ -25,9 +24,11 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$st
     };
 
     $scope.addFriend = function() {
-      $http.post('/addFriend', {username: $scope.getPage()})
+      var new_friend = $scope.getPage();
+      $http.post('/addFriend', {username: new_friend})
         .success(function(data) {
-          $window.location.reload();
+          if (!$scope.isFriend())
+            $scope.global.user.friends.push(new_friend);
         });
     };
 
