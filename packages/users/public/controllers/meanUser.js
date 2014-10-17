@@ -52,6 +52,8 @@ angular.module('mean.users')
           .success(function(response) {
             // authentication OK
             $scope.loginError = 0;
+            $scope.global.user = response.user;
+            $scope.global.authenticated = 1;
             $rootScope.user = response.user;
             $rootScope.$emit('loggedin');
             if (response.redirect) {
@@ -62,7 +64,7 @@ angular.module('mean.users')
                 window.location = response.redirect;
               }
             } else {
-              $location.url('/');
+              $location.url('user/' + response.username);
             }
           })
           .error(function() {
@@ -73,7 +75,7 @@ angular.module('mean.users')
   ])
   .controller('RegisterCtrl', ['$scope', '$rootScope', '$http', '$location', 'Global',
     function($scope, $rootScope, $http, $location, Global) {
-      $scope.user = {};
+      $scope.user = { friends: []};
       $scope.global = Global;
       $scope.global.registerForm = true;
       $scope.input = {
@@ -111,9 +113,11 @@ angular.module('mean.users')
           .success(function() {
             // authentication OK
             $scope.registerError = 0;
+            $scope.global.user = $scope.user;
+            $scope.global.authenticated = 1;
             $rootScope.user = $scope.user;
             $rootScope.$emit('loggedin');
-            $location.url('/');
+            $location.url('user/' + $scope.user.username);
           })
           .error(function(error) {
             // Error: authentication failed
