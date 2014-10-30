@@ -130,24 +130,6 @@ angular.module('mean.users')
       };
     }
   ])
-  .controller('ForgotPasswordCtrl', ['$scope', '$rootScope', '$http', '$location', 'Global',
-    function($scope, $rootScope, $http, $location, Global) {
-      $scope.user = {};
-      $scope.global = Global;
-      $scope.global.registerForm = false;
-      $scope.forgotpassword = function() {
-        $http.post('/forgot-password', {
-          text: $scope.text
-        })
-          .success(function(response) {
-            $scope.response = response;
-          })
-          .error(function(error) {
-            $scope.response = error;
-          });
-      };
-    }
-  ])
   .controller('ResetPasswordCtrl', ['$scope', '$rootScope', '$http', '$location', '$stateParams', 'Global',
     function($scope, $rootScope, $http, $location, $stateParams, Global) {
       $scope.user = {};
