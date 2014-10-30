@@ -1,5 +1,8 @@
 'use strict';
 
+/* Make sure User is loaded */
+require('../../../users/server/models/user');
+
 var mongoose = require('mongoose'),
   LocalStrategy = require('passport-local').Strategy,
   TwitterStrategy = require('passport-twitter').Strategy,

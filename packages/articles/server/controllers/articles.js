@@ -1,5 +1,9 @@
 'use strict';
 
+/* Make sure User and Article are loaded */
+require('../../../users/server/models/user');
+require('../models/article');
+
 /**
  * Module dependencies.
  users = require('../../../users/server/controllers/users')

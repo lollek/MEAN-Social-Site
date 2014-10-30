@@ -1,5 +1,8 @@
 'use strict';
 
+/* Make sure User is loaded */
+require('../models/user');
+
 /**
  * Module dependencies.
  */
