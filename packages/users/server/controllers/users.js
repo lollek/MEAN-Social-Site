@@ -8,8 +8,7 @@ var mongoose = require('mongoose'),
   async = require('async'),
   config = require('meanio').loadConfig(),
   crypto = require('crypto'),
-  nodemailer = require('nodemailer'),
-  templates = require('../template');
+  nodemailer = require('nodemailer');
 
 /**
  * Auth callback
@@ -247,8 +246,10 @@ exports.forgotpassword = function(req, res, next) {
           to: user.email,
           from: config.emailFrom
         };
+        /*
         mailOptions = templates.forgot_password_email(user, req, token, mailOptions);
         sendMail(mailOptions);
+        */
         done(null, true);
       }
     ],
