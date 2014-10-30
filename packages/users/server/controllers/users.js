@@ -1,43 +1,19 @@
 'use strict';
 
-/* Make sure User is loaded */
+/* Need to load this manually for jscover */
 require('../models/user');
 
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-  User = mongoose.model('User');
-
-/**
- * Auth callback
- */
-exports.authCallback = function(req, res) {
-  res.redirect('/');
-};
-
-/**
- * Show login form
- */
-exports.signin = function(req, res) {
-  if (req.isAuthenticated()) {
-    return res.redirect('/');
-  }
-  res.redirect('#!/login');
-};
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
 /**
  * Logout
  */
 exports.signout = function(req, res) {
   req.logout();
-  res.redirect('/');
-};
-
-/**
- * Session
- */
-exports.session = function(req, res) {
   res.redirect('/');
 };
 
@@ -99,44 +75,7 @@ exports.create = function(req, res, next) {
     res.status(200);
   });
 };
-/**
- * Send User
- */
-exports.me = function(req, res) {
-  res.json(req.user || null);
-};
 
-/**
- * Find user by id
- */
-exports.user = function(req, res, next, id) {
-  User
-    .findOne({
-      _id: id
-    })
-    .exec(function(err, user) {
-      if (err) return next(err);
-      if (!user) return next(new Error('Failed to load User ' + id));
-      req.profile = user;
-      next();
-    });
-};
-
-/**
- * Find user by username
- */
-exports.username = function(req, res, next, nickname) {
-  User
-    .findOne({
-      username: nickname
-    })
-    .exec(function(err, user) {
-      if (err) return next(err);
-      if (!user) return next(new Error('Failed to load User ' + nickname));
-      req.profile = user;
-      next();
-    });
-};
 
 /**
  * Search for user by username

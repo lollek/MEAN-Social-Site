@@ -1,7 +1,7 @@
 'use strict';
 
 var paths = {
-  js: ['*.js', 'test/**/*.js', '!test/coverage/**', '!bower_components/**', 'packages/**/*.js', '!packages/**/node_modules/**', '!packages/contrib/**/*.js', '!packages/contrib/**/node_modules/**'],
+  js: ['*.js', 'test/**/*.js', '!test/coverage/**', '!bower_components/**', 'packages/**/*.js', '!packages/**/node_modules/**', '!packages/contrib/**/*.js', '!packages/contrib/**/node_modules/**', '!packages/**/server-cov/**'],
   html: ['packages/**/public/**/views/**', 'packages/**/server/views/**'],
   css: ['!bower_components/**', 'packages/**/public/**/css/*.css', '!packages/contrib/**/public/**/css/*.css']
 };
@@ -92,11 +92,11 @@ module.exports = function(grunt) {
         require: [
           'server.js',
           function() {
-            require('meanio/lib/util').preload(__dirname + '/packages/**/server', 'model');
+            require('meanio/lib/util').preload(__dirname + '/packages/**/server-cov', 'model');
           }
         ]
       },
-      src: ['packages/**/server/tests/**/*.js']
+      src: ['packages/**/server/tests/*.js']
     },
     env: {
       test: {

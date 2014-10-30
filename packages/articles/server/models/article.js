@@ -49,4 +49,7 @@ ArticleSchema.statics.load = function(id, cb) {
   }).populate('user', 'name username').exec(cb);
 };
 
-mongoose.model('Article', ArticleSchema);
+
+try {
+  mongoose.model('Article', ArticleSchema);
+} catch(e) {}

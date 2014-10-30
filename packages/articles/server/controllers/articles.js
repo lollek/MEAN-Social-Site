@@ -1,16 +1,13 @@
 'use strict';
 
-/* Make sure User and Article are loaded */
-require('../../../users/server/models/user');
+/* Need to load them manually when doing jscover */
 require('../models/article');
+require('../../../users/server-cov/models/user');
 
-/**
- * Module dependencies.
- users = require('../../../users/server/controllers/users')
- */
-var mongoose = require('mongoose'),
-  Article = mongoose.model('Article'),
-  User = mongoose.model('User');
+var mongoose = require('mongoose');
+var Article = mongoose.model('Article');
+var User = mongoose.model('User');
+
 
 exports.addFriend = function(req, res) {
   User.update({ 

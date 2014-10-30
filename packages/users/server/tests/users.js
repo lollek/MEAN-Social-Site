@@ -21,6 +21,8 @@ var should = require('should'),
   mongoose = require('mongoose'),
   User = mongoose.model('User');
 
+var controller = require('../../server-cov/controllers/users');
+
 /**
  * Globals
  */
@@ -387,9 +389,7 @@ describe('<Unit Test>', function() {
           }
         });
       });
-
-    });
-
+  });
     after(function(done) {
 
       /** Clean up user objects
@@ -406,4 +406,61 @@ describe('<Unit Test>', function() {
       done();
     });
   });
+
+  describe('Controller User:', function() {
+
+    it('Should be able to logout and redirect user to root on signout', function(done) {
+      var res = {
+        dir: '',
+        redirect: function(arg) { this.dir = arg; }
+      };
+      var req = {
+        called: false,
+        logout: function() { this.called = true; }
+      };
+
+      controller.signout(req, res);
+      res.dir.should.equal('/');
+      req.called.should.equal(true);
+
+
+      done();
+    });
+
+    it('Should be possible to create a user', function(done) {
+      var _user1 = new User(user1);
+
+      var req = {
+        body: user1,
+        assert: function() {
+          return {
+            notEmpty: function() { return true; },
+            isEmail:  function() { return true; },
+            len:      function() { return true; },
+            equals:   function() { return true; }
+          };
+        },
+        validationErrors: function() { return false; },
+        logIn: function(a, b) { b(false); }
+      };
+
+      var res = {
+        _status: undefined,
+        redirect: function(newdir) {
+          newdir.should.equal('/');
+          _user1.remove();
+          done();
+        },
+        status: function(num) { this._status = num; return this.send; },
+        send: function(wat) {
+          should.not.exist(wat);
+          done();
+        }
+      };
+
+      controller.create(req, res);
+    });
+  });
+
+
 });
