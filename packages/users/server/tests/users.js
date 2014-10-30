@@ -1,6 +1,7 @@
 'use strict';
 
 var crypto = require('crypto');
+var request = require('request');
 
 /**
  * Create a random hex string of specific length and
@@ -21,12 +22,11 @@ var should = require('should'),
   mongoose = require('mongoose'),
   User = mongoose.model('User');
 
-var controller = require('../../server-cov/controllers/users');
-
 /**
  * Globals
  */
 var user1, user2;
+var testuser;
 
 /**
  * Test Suites
@@ -408,59 +408,110 @@ describe('<Unit Test>', function() {
   });
 
   describe('Controller User:', function() {
+    it('Should NOT be possible to create a user with no username', function(done) {
+      testuser = user1;
+      testuser.email = 'test' + getRandomString() + '@test.com',
+      testuser.username = '';
+      testuser.confirmPassword = testuser.password;
 
-    it('Should be able to logout and redirect user to root on signout', function(done) {
-      var res = {
-        dir: '',
-        redirect: function(arg) { this.dir = arg; }
-      };
-      var req = {
-        called: false,
-        logout: function() { this.called = true; }
-      };
+      request.post({
+        url: 'http://localhost:3000/register',
+        body: testuser,
+        json: true
+      }, function(err, res) {
+          res.statusCode.should.equal(400);
+          done();
+      });
 
-      controller.signout(req, res);
-      res.dir.should.equal('/');
-      req.called.should.equal(true);
+      testuser.username = getRandomString();
+    });
 
+    it('Should NOT be possible to create a user with no name', function(done) {
+      testuser.name = '';
 
-      done();
+      request.post({
+        url: 'http://localhost:3000/register',
+        body: testuser,
+        json: true
+      }, function(err, res) {
+          res.statusCode.should.equal(400);
+          done();
+      });
+
+      testuser.name = 'Steve';
+    });
+
+    it('Should NOT be possible to create a user with mismatching passwords', function(done) {
+      testuser.password = 'steve';
+
+      request.post({
+        url: 'http://localhost:3000/register',
+        body: testuser,
+        json: true
+      }, function(err, res) {
+          res.statusCode.should.equal(400);
+          done();
+      });
+
+      testuser.password = 'password';
     });
 
     it('Should be possible to create a user', function(done) {
-      var _user1 = new User(user1);
-
-      var req = {
-        body: user1,
-        assert: function() {
-          return {
-            notEmpty: function() { return true; },
-            isEmail:  function() { return true; },
-            len:      function() { return true; },
-            equals:   function() { return true; }
-          };
-        },
-        validationErrors: function() { return false; },
-        logIn: function(a, b) { b(false); }
-      };
-
-      var res = {
-        _status: undefined,
-        redirect: function(newdir) {
-          newdir.should.equal('/');
-          _user1.remove();
+      request.post({
+        url: 'http://localhost:3000/register',
+        body: testuser,
+        json: true
+      }, function(err, res) {
+          should.not.exist(err);
+          res.statusCode.should.not.equal(400);
           done();
-        },
-        status: function(num) { this._status = num; return this.send; },
-        send: function(wat) {
-          should.not.exist(wat);
-          done();
-        }
-      };
-
-      controller.create(req, res);
+      });
     });
+
+    it('Should be able to login with that user', function(done) {
+      request.post({
+        url: 'http://localhost:3000/login',
+        body: testuser,
+        json: true
+      }, function(err, res) {
+          should.not.exist(err);
+          res.statusCode.should.not.equal(400);
+          done();
+      });
+    });
+
+    it('Should NOT be able to login with a bad user', function(done) {
+      var tmptest = testuser;
+      tmptest.email = 'mailaddr_that_does_not_exist@test.se';
+      request.post({
+        url: 'http://localhost:3000/login',
+        body: tmptest,
+        json: true
+      }, function(err, res) {
+          res.body.should.equal('Unauthorized');
+          res.statusCode.should.equal(401);
+          done();
+      });
+    });
+
+
+    it('Should be possible to search for users', function(done) {
+      request.get({
+        url: 'http://localhost:3000/search/' + testuser.name
+      }, function(err, res) {
+          res.body.should.not.equal('[]');
+          done();
+      });
+    });
+
+    it('Should NOT be possible to search for nonexistant users', function(done) {
+      request.get({
+        url: 'http://localhost:3000/search/pokasdpoaksdpok'
+      }, function(err, res) {
+          res.body.should.equal('[]');
+          done();
+      });
+    });
+
   });
-
-
 });

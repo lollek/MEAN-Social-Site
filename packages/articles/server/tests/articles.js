@@ -138,7 +138,7 @@ describe('<Unit Test>', function() {
           this.first = first;
           this.second = second;
         }
-      }
+      };
 
       _user1.save(function(err) {
         should.not.exist(err);
