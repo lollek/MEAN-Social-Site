@@ -9,9 +9,6 @@ require('../models/user');
 var mongoose = require('mongoose'),
   User = mongoose.model('User');
 
-/* Make sure we have already initialized the model */
-require('../models/user');
-
 /**
  * Auth callback
  */
@@ -158,45 +155,4 @@ exports.findUser = function(req, res, next) {
       if (!users) return next(new Error('No users found'));
       res.json(users);
     });
-};
-
-/**
- * Resets the password
- */
-
-exports.resetpassword = function(req, res, next) {
-  User.findOne({
-    resetPasswordToken: req.params.token,
-    resetPasswordExpires: {
-      $gt: Date.now()
-    }
-  }, function(err, user) {
-    if (err) {
-      return res.status(400).json({
-        msg: err
-      });
-    }
-    if (!user) {
-      return res.status(400).json({
-        msg: 'Token invalid or expired'
-      });
-    }
-    req.assert('password', 'Password must be between 8-20 characters long').len(8, 20);
-    req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-    var errors = req.validationErrors();
-    if (errors) {
-      return res.status(400).send(errors);
-    }
-    user.password = req.body.password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
-    user.save(function(err) {
-      req.logIn(user, function(err) {
-        if (err) return next(err);
-        return res.send({
-          user: user,
-        });
-      });
-    });
-  });
 };

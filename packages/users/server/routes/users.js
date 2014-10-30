@@ -17,9 +17,6 @@ module.exports = function(MeanUser, app, auth, database, passport) {
   app.route('/register')
     .post(users.create);
 
-  app.route('/reset/:token')
-    .post(users.resetpassword);
-
   // AngularJS route to check for authentication
   app.route('/loggedin')
     .get(function(req, res) {
