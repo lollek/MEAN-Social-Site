@@ -10,7 +10,7 @@ function cover_folder() {
   "$mocha"   "packages/${1}/server-cov/"* -R html-cov > "coverage_${1}.html"
 }
 
-for folder in packages/*; do
+for folder in theme system access users articles; do
   cover_folder "$(basename "$folder")"
 done
 
