@@ -54,3 +54,4 @@ modules/public/
 modules/views/
 /public/build/
 coverage_*.html
+packages/**/server-cov/*
