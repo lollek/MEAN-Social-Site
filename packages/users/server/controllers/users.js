@@ -10,6 +10,9 @@ var mongoose = require('mongoose'),
   crypto = require('crypto'),
   nodemailer = require('nodemailer');
 
+/* Make sure we have already initialized the model */
+require('../models/user');
+
 /**
  * Auth callback
  */
