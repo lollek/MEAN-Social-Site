@@ -410,7 +410,7 @@ describe('<Unit Test>', function() {
   describe('Controller User:', function() {
     it('Should NOT be possible to create a user with no username', function(done) {
       testuser = user1;
-      testuser.email = 'test' + getRandomString() + '@test.com',
+      testuser.email = 'test' + getRandomString() + '@test.com';
       testuser.username = '';
       testuser.confirmPassword = testuser.password;
 
