@@ -1,6 +1,11 @@
 'use strict';
 
 angular.module('mean.users')
+  .controller('AuthCtrl', ['$scope', '$rootScope', '$http', '$location', 'Global',
+    function($scope, $rootScope, $http, $location, Global) {
+      $scope.global = Global;
+    }
+  ])
   .controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$location', 'Global',
     function($scope, $rootScope, $http, $location, Global) {
       // This object will be filled by the form
